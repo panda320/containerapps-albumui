@@ -1,0 +1,42 @@
+name: Trigger auto deployment for containerappsalbumui
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/containerappsalbumui-AutoDeployTrigger-db3b6000-137c-484d-915b-5ebf7927ff2c.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CONTAINERAPPSALBUMUI_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: acahansonregistry.azurecr.io
+          registryUsername: ${{ secrets.CONTAINERAPPSALBUMUI_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CONTAINERAPPSALBUMUI_REGISTRY_PASSWORD }}
+          containerAppName: containerappsalbumui
+          resourceGroup: acahanson-rg
+          imageToBuild: acahansonregistry.azurecr.io/containerappsalbumui:${{ github.sha }}
+          
+
+     
+
