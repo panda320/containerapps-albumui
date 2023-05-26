@@ -33,7 +33,7 @@ jobs:
           registryUrl: acahansonregistry.azurecr.io
           registryUsername: ${{ secrets.CONTAINERAPPSALBUMUI_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.CONTAINERAPPSALBUMUI_REGISTRY_PASSWORD }}
-          containerAppName: containerappsalbumui-test
+          containerAppName: containerappsalbumui
           resourceGroup: acahanson-rg
           imageToBuild: acahansonregistry.azurecr.io/containerappsalbumui:${{ github.sha }}
           
